@@ -1,10 +1,11 @@
+
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
  
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -12,9 +13,11 @@ import java.net.UnknownHostException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
- 
+
+@SuppressWarnings("serial")
 public class serverChatform extends JFrame implements ActionListener {
     static ServerSocket server;
     static Socket conn;
@@ -24,27 +27,41 @@ public class serverChatform extends JFrame implements ActionListener {
     JButton Send;
     DataInputStream dis;
     DataOutputStream dos;
+    JScrollPane scroll ;
  
     public serverChatform() throws UnknownHostException, IOException {
  
         panel = new JPanel();
         NewMsg = new JTextField();
         ChatHistory = new JTextArea();
+        ChatHistory.setEditable(false);
+        scroll = new JScrollPane(ChatHistory,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//        scroll1 = new JScrollPane(ChatHistory);
+//        
+//        this.add(scroll1);
         Send = new JButton("Send");
+       
         this.setSize(500, 500);
         this.setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         panel.setLayout(null);
         this.add(panel);
+        ChatHistory.setLineWrap(true);
+        ChatHistory.setWrapStyleWord(true);
         ChatHistory.setBounds(20, 20, 450, 360);
         panel.add(ChatHistory);
         NewMsg.setBounds(20, 400, 340, 30);
+        panel.add(scroll);
+        panel.add(scroll);
         panel.add(NewMsg);
         Send.setBounds(375, 400, 95, 30);
         panel.add(Send);
+        panel.getRootPane().setDefaultButton(Send);
         this.setTitle("EasyTrip Customer Service");
         Send.addActionListener(this);
-        server = new ServerSocket(2000, 1, InetAddress.getByName("192.168.7.74"));
+       ServerSocket server = new ServerSocket(4444);
         ChatHistory.setText("Waiting for EasyTrip User:");
         conn = server.accept();
         ChatHistory.setText(ChatHistory.getText() + '\n' + "User Found");
@@ -64,9 +81,14 @@ public class serverChatform extends JFrame implements ActionListener {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+                finally {
+                    server.close();
+                }
             }
         }
+     
     }
+    
  
     @Override
     public void actionPerformed(ActionEvent e) {

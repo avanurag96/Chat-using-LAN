@@ -1,3 +1,4 @@
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
@@ -12,20 +13,33 @@ import java.sql.Time;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
  
+@SuppressWarnings("serial")
 public class ClientChatForm extends JFrame implements ActionListener {
     static Socket conn;
     JPanel panel;
     JTextField NewMsg;
     JTextArea ChatHistory;
     JButton Send;
+    JScrollPane scroll ;
  
     public ClientChatForm() throws UnknownHostException, IOException {
         panel = new JPanel();
         NewMsg = new JTextField();
         ChatHistory = new JTextArea();
+        ChatHistory.setEditable(false);
+        scroll = new JScrollPane(ChatHistory,
+        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        ChatHistory.setLineWrap(true);
+        ChatHistory.setWrapStyleWord(true);
+//        scroll = new JScrollPane(ChatHistory);
+// 
+//        this.add(scroll);
+
         Send = new JButton("Send");
         this.setSize(500, 500);
         this.setVisible(true);
@@ -35,17 +49,19 @@ public class ClientChatForm extends JFrame implements ActionListener {
         ChatHistory.setBounds(20, 20, 450, 360);
         panel.add(ChatHistory);
         NewMsg.setBounds(20, 400, 340, 30);
+        panel.add(scroll);
         panel.add(NewMsg);
         Send.setBounds(375, 400, 95, 30);
         panel.add(Send);
+        panel.getRootPane().setDefaultButton(Send);
         Send.addActionListener(this);
-        conn = new Socket(InetAddress.getByName("192.168.7.74"), 2000);
+        conn = new Socket(InetAddress.getByName("GHOST"), 4444);
  
         /*
-         * for remote pc use ip address of server with function */
-         InetAddress.getByName("192.168.7.74");
-         ChatHistory.setText("Connected to Server");
-         
+         * for remote pc use ip address of server with function
+         * InetAddress.getByName("Provide ip here")
+         * ChatHistory.setText("Connected to Server");
+         */
  
         ChatHistory.setText("EasyTrip executive is online");
         this.setTitle("ET User");
