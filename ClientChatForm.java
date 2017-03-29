@@ -1,3 +1,4 @@
+package chatnb;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import chatnb.serverChatform.CloseListener;
  
 @SuppressWarnings("serial")
 public class ClientChatForm extends JFrame implements ActionListener {
@@ -24,6 +27,7 @@ public class ClientChatForm extends JFrame implements ActionListener {
     JTextField NewMsg;
     JTextArea ChatHistory;
     JButton Send;
+    JButton Ex;
     JScrollPane scroll ;
  
     public ClientChatForm() throws UnknownHostException, IOException {
@@ -36,23 +40,24 @@ public class ClientChatForm extends JFrame implements ActionListener {
         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         ChatHistory.setLineWrap(true);
         ChatHistory.setWrapStyleWord(true);
-//        scroll = new JScrollPane(ChatHistory);
-// 
-//        this.add(scroll);
 
         Send = new JButton("Send");
         this.setSize(500, 500);
         this.setVisible(true);
+        Ex = new JButton("Exit");
+        Ex.addActionListener(new CloseListener());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         panel.setLayout(null);
         this.add(panel);
         ChatHistory.setBounds(20, 20, 450, 360);
         panel.add(ChatHistory);
-        NewMsg.setBounds(20, 400, 340, 30);
+        NewMsg.setBounds(20, 400, 250, 30);
         panel.add(scroll);
         panel.add(NewMsg);
-        Send.setBounds(375, 400, 95, 30);
+        Send.setBounds(280, 400, 95, 30);
+        Ex.setBounds(380, 400, 95 ,30);
         panel.add(Send);
+        panel.add(Ex);
         panel.getRootPane().setDefaultButton(Send);
         Send.addActionListener(this);
         conn = new Socket(InetAddress.getByName("GHOST"), 4444);
@@ -114,5 +119,11 @@ public class ClientChatForm extends JFrame implements ActionListener {
     public static void main(String[] args) throws UnknownHostException,
             IOException {
         ClientChatForm chatForm = new ClientChatForm();
+    }
+    public class CloseListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
     }
 }

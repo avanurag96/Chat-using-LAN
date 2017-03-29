@@ -1,3 +1,5 @@
+package chatnb;
+
 
 
 import java.awt.event.ActionEvent;
@@ -25,6 +27,7 @@ public class serverChatform extends JFrame implements ActionListener {
     JTextField NewMsg;
     JTextArea ChatHistory;
     JButton Send;
+    JButton Ex;
     DataInputStream dis;
     DataOutputStream dos;
     JScrollPane scroll ;
@@ -38,10 +41,9 @@ public class serverChatform extends JFrame implements ActionListener {
         scroll = new JScrollPane(ChatHistory,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//        scroll1 = new JScrollPane(ChatHistory);
-//        
-//        this.add(scroll1);
         Send = new JButton("Send");
+        Ex = new JButton("Exit");
+        Ex.addActionListener(new CloseListener());
        
         this.setSize(500, 500);
         this.setVisible(true);
@@ -52,12 +54,14 @@ public class serverChatform extends JFrame implements ActionListener {
         ChatHistory.setWrapStyleWord(true);
         ChatHistory.setBounds(20, 20, 450, 360);
         panel.add(ChatHistory);
-        NewMsg.setBounds(20, 400, 340, 30);
+        NewMsg.setBounds(20, 400, 250, 30);
         panel.add(scroll);
         panel.add(scroll);
         panel.add(NewMsg);
-        Send.setBounds(375, 400, 95, 30);
+        Send.setBounds(280, 400, 95, 30);
+        Ex.setBounds(380, 400, 95 ,30);
         panel.add(Send);
+        panel.add(Ex);
         panel.getRootPane().setDefaultButton(Send);
         this.setTitle("EasyTrip Customer Service");
         Send.addActionListener(this);
@@ -117,4 +121,11 @@ public class serverChatform extends JFrame implements ActionListener {
     IOException {
         new serverChatform();
     }
+    public class CloseListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
+    }
 }
+
